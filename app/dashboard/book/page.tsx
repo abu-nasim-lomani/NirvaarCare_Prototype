@@ -31,8 +31,8 @@ export default function BookingWizard() {
     const [prescription, setPrescription] = useState('');
     const [caregiver, setCaregiver] = useState('');
 
-    const nextStep = () => window.scrollTo(0, 0) || setStep(s => s + 1);
-    const prevStep = () => window.scrollTo(0, 0) || setStep(s => s - 1);
+    const nextStep = () => { window.scrollTo(0, 0); setStep(s => s + 1); };
+    const prevStep = () => { window.scrollTo(0, 0); setStep(s => s - 1); };
 
     const curSvc = SERVICES.find(s => s.id === svcId);
 

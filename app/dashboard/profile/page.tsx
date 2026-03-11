@@ -28,7 +28,7 @@ export default function ProfilePage() {
     const [showAddMember, setShowAddMember] = useState(false);
     const [newMember, setNewMember] = useState({ name: '', relation: '', age: '', blood: '' });
 
-    const TABS: { id: Tab, label: string, en: string }[] = [
+    const TABS: Array<{ id: Tab, label: string, en: string }> = [
         { id: 'profile', label: 'আমার প্রোফাইল', en: 'My Profile' },
         { id: 'family', label: 'পরিবারের সদস্য', en: 'Family Members' },
         { id: 'emergency', label: 'জরুরি যোগাযোগ', en: 'Emergency' },

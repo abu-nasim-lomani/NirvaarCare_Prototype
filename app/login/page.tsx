@@ -5,7 +5,7 @@ import { Phone, Eye, EyeOff, ArrowRight, RefreshCw } from 'lucide-react';
 import { useAuth } from '@/components/context/AuthContext';
 import { useLang } from '@/components/context/LanguageContext';
 
-type Role = 'customer' | 'caregiver' | 'partner';
+type Role = 'customer' | 'caregiver' | 'partner' | 'admin';
 
 export default function LoginPage() {
     const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
@@ -104,9 +104,11 @@ export default function LoginPage() {
                         <div>
                             <h2 className="font-bold text-gray-800 mb-4">{t('আপনি কে?', 'Who are you?')}</h2>
                             <div className="space-y-2 mb-4">
-                                {([['customer', '👨‍👩‍👧', 'আমি একজন ক্লায়েন্ট', 'I am a client (family/patient)'],
-                                ['caregiver', '🏥', 'আমি একজন কেয়ারগিভার', 'I am a caregiver'],
-                                ['partner', '🏪', 'আমি একজন পার্টনার', 'I am a partner (pharmacy/diagnostic)']] as [Role, string, string, string][]).map(([r, emoji, bn, en]) => (
+                                {([
+                                    { r: 'customer' as Role, emoji: '👨‍👩‍👧', bn: 'আমি একজন ক্লায়েন্ট', en: 'I am a client (family/patient)' },
+                                    { r: 'caregiver' as Role, emoji: '🏥', bn: 'আমি একজন কেয়ারগিভার', en: 'I am a caregiver' },
+                                    { r: 'partner' as Role, emoji: '🏪', bn: 'আমি একজন পার্টনার', en: 'I am a partner (pharmacy/diagnostic)' }
+                                ]).map(({ r, emoji, bn, en }) => (
                                     <button key={r} onClick={() => setRole(r)}
                                         className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${role === r ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/40'}`}>
                                         <span className="text-2xl">{emoji}</span>
