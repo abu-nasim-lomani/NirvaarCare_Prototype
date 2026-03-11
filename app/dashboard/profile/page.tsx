@@ -151,7 +151,7 @@ export default function ProfilePage() {
                             </div>
                             <div className="flex gap-2">
                                 <button onClick={() => setShowAddMember(false)} className="flex-1 border border-gray-200 py-2 rounded-xl text-sm">{t('বাতিল', 'Cancel')}</button>
-                                <button onClick={() => { setMembers(m => [...m, { id: Date.now(), ...newMember, age: +newMember.age, conditions: [], meds: '' }]); setShowAddMember(false); setNewMember({ name: '', relation: '', age: '', blood: ''; }) }}
+                                <button onClick={() => { setMembers(m => [...m, { id: Date.now(), ...newMember, age: +newMember.age, conditions: [], meds: '' }]); setShowAddMember(false); setNewMember({ name: '', relation: '', age: '', blood: '' }); }}
                                     disabled={!newMember.name || !newMember.relation}
                                     className="flex-1 bg-primary text-white py-2 rounded-xl text-sm font-bold disabled:opacity-50">{t('যোগ করুন', 'Add')}</button>
                             </div>
