@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { ArrowRight, Phone, Shield, Clock, Star, ChevronLeft, ChevronRight, Heart, Activity, Pill, AlertTriangle, ShoppingBag, Smile, CheckCircle } from 'lucide-react';
+import { ArrowRight, Phone, Shield, Clock, Star, ChevronLeft, ChevronRight, Heart, Activity, Pill, AlertTriangle, ShoppingBag, Smile, CheckCircle, FileText } from 'lucide-react';
 import { useLang } from '@/components/context/LanguageContext';
 
 const SERVICES = [
@@ -68,6 +68,13 @@ export default function HomePage() {
                                 </Link>
                                 <a href="tel:01800000000" className="inline-flex items-center justify-center gap-2 bg-emergency font-bold px-6 py-3.5 rounded-xl hover:bg-red-700 transition-all">
                                     <Phone className="w-4 h-4" /> {t('জরুরি কল', 'Emergency Call')}
+                                </a>
+                            </div>
+
+                            {/* PROJECT PLAN LINK */}
+                            <div className="mt-6 flex items-center">
+                                <a href="/nirvaar_care_plan.html" target="_blank" className="inline-flex items-center gap-2 text-blue-100 hover:text-white underline decoration-white/30 hover:decoration-white transition-all text-sm font-bold">
+                                    <FileText className="w-4 h-4" /> {t('সম্পূর্ণ প্রজেক্ট প্ল্যান ও ফিচার লিস্ট দেখুন', 'View Full Project Plan & Feature List')}
                                 </a>
                             </div>
                         </div>

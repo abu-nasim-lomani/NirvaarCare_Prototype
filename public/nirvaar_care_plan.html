@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>নির্ভার কেয়ার — Complete UI/UX Implementation Plan</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --primary: #1A5C8C;
+    --accent: #F4A836;
+    --emergency: #DC2626;
+    --success: #16A34A;
+    --bg: #F8F7F4;
+    --text: #1C1B1A;
+    --border: #E2DDD8;
+    --light: #EAF2F8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Hind Siliguri', sans-serif;
+    background: white;
+    color: var(--text);
+    font-size: 11pt;
+    line-height: 1.7;
+  }
+
+  .cover {
+    background: linear-gradient(135deg, #1A5C8C 0%, #0D3A5C 60%, #0D3A5C 100%);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 40px;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: rgba(244,168,54,0.15);
+    border-radius: 50%;
+  }
+  .cover-logo { font-size: 48pt; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; position: relative; z-index: 1; }
+  .cover-logo span { color: #F4A836; }
+  .cover-tagline { font-size: 14pt; opacity: 0.85; margin-bottom: 48px; font-weight: 300; position: relative; z-index: 1; }
+  .cover-title { font-size: 22pt; font-weight: 700; margin-bottom: 16px; line-height: 1.3; position: relative; z-index: 1; font-family: 'Hind Siliguri', sans-serif; }
+  .cover-subtitle { font-size: 12pt; opacity: 0.8; margin-bottom: 56px; position: relative; z-index: 1; }
+  .cover-stats { display: flex; gap: 32px; justify-content: center; position: relative; z-index: 1; flex-wrap: wrap; }
+  .stat-box { text-align: center; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 20px 28px; }
+  .stat-number { font-size: 28pt; font-weight: 800; color: #F4A836; }
+  .stat-label { font-size: 9pt; opacity: 0.8; margin-top: 4px; }
+  .cover-footer { position: absolute; bottom: 40px; font-size: 9pt; opacity: 0.6; z-index: 1; }
+
+  .content { max-width: 960px; margin: 0 auto; padding: 40px 48px; }
+
+  h1 { font-size: 20pt; font-weight: 800; color: var(--primary); margin: 48px 0 16px; padding-bottom: 12px; border-bottom: 3px solid var(--accent); font-family: 'Hind Siliguri', sans-serif; }
+  h1:first-child { margin-top: 0; }
+
+  h2 { font-size: 14pt; font-weight: 700; color: var(--primary); margin: 32px 0 12px; display: flex; align-items: center; gap: 8px; }
+  h2::before { content: ''; display: inline-block; width: 4px; height: 20px; background: var(--accent); border-radius: 2px; flex-shrink: 0; }
+
+  h3 { font-size: 11.5pt; font-weight: 600; color: #0D3A5C; margin: 20px 0 8px; background: var(--light); padding: 8px 14px; border-radius: 6px; border-left: 3px solid var(--primary); }
+  h4 { font-size: 10.5pt; font-weight: 600; color: var(--text); margin: 14px 0 6px; }
+  p { margin-bottom: 12px; color: #333; }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 22px; font-size: 10pt; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,0.08); }
+  thead { background: var(--primary); color: white; }
+  thead th { padding: 10px 14px; text-align: left; font-weight: 600; font-size: 9.5pt; }
+  tbody tr:nth-child(even) { background: #F0F6FB; }
+  tbody tr:nth-child(odd) { background: white; }
+  tbody td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .center { text-align: center; }
+
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 8.5pt; font-weight: 600; }
+  .badge-new { background: #DCFCE7; color: #15803D; }
+
+  .card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 10px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .card-accent { border-left: 4px solid var(--accent); }
+  .card-primary { border-left: 4px solid var(--primary); }
+  .card-success { border-left: 4px solid var(--success); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 14px 0; }
+
+  .zone-banner { background: linear-gradient(135deg, var(--primary), #0D3A5C); color: white; border-radius: 12px; padding: 18px 26px; margin: 28px 0 18px; display: flex; align-items: center; justify-content: space-between; page-break-inside: avoid; }
+  .zone-banner h2 { color: white; font-size: 14pt; margin: 0; }
+  .zone-banner h2::before { background: var(--accent); }
+  .zone-banner .zone-count { background: var(--accent); color: white; font-weight: 700; padding: 6px 16px; border-radius: 20px; font-size: 10pt; white-space: nowrap; }
+
+  .feature-list { list-style: none; padding: 0; }
+  .feature-list li { padding: 5px 0 5px 22px; position: relative; border-bottom: 1px solid #F0EDE8; font-size: 10pt; }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list li::before { content: '▸'; position: absolute; left: 4px; color: var(--accent); font-weight: 700; }
+
+  .swatch-row { display: flex; gap: 10px; margin: 10px 0; }
+  .swatch { flex: 1; height: 50px; border-radius: 8px; display: flex; align-items: flex-end; padding: 6px 10px; font-size: 8pt; font-weight: 600; color: white; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+
+  .summary-box { background: linear-gradient(135deg, #EAF2F8, #FFF8EC); border: 2px solid var(--accent); border-radius: 12px; padding: 22px 28px; margin: 28px 0; text-align: center; }
+  .summary-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 18px; }
+  .summary-item { background: white; border-radius: 8px; padding: 12px 6px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .summary-item .num { font-size: 20pt; font-weight: 800; color: var(--primary); }
+  .summary-item .lbl { font-size: 7.5pt; color: #666; margin-top: 4px; }
+
+  .check { color: var(--success); font-weight: 700; font-size: 12pt; }
+  .cross { color: #CBD5E1; font-size: 12pt; }
+
+  .alert { border-radius: 8px; padding: 10px 14px; margin: 10px 0; font-size: 10pt; display: flex; align-items: flex-start; gap: 10px; }
+  .alert-info { background: #EAF2F8; border-left: 4px solid var(--primary); }
+  .alert-emergency { background: #FEF2F2; border-left: 4px solid var(--emergency); }
+
+  .page-footer { text-align: center; font-size: 8pt; color: #999; margin: 40px 0 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .avoid-break { page-break-inside: avoid; }
+
+  @media print {
+    body { font-size: 10pt; }
+    h1 { page-break-before: always; }
+    h1:first-child { page-break-before: avoid; }
+    .zone-banner { page-break-before: always; }
+    @page { margin: 18mm 16mm; size: A4; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-logo">নির্ভার <span>কেয়ার</span></div>
+  <div class="cover-tagline">আপনার প্রিয়জনের যত্ন, এখন আপনার হাতের মুঠোয়</div>
+  <div class="cover-title">Complete UI/UX Implementation Plan</div>
+  <div class="cover-subtitle">Version 3.0 — Final &amp; Complete | মার্চ ২০২৬</div>
+  <div class="cover-stats">
+    <div class="stat-box"><div class="stat-number">৩৫</div><div class="stat-label">মোট পেজ</div></div>
+    <div class="stat-box"><div class="stat-number">৬</div><div class="stat-label">Zone / Portal</div></div>
+    <div class="stat-box"><div class="stat-number">৪</div><div class="stat-label">User Role</div></div>
+    <div class="stat-box"><div class="stat-number">৬</div><div class="stat-label">Services</div></div>
+  </div>
+  <div class="cover-footer">নির্ভার কেয়ার প্রাইভেট লিমিটেড | Confidential Document</div>
+</div>
+
+<div class="content">
+
+<!-- TOC -->
+<h1>সূচিপত্র (Table of Contents)</h1>
+<table>
+  <thead><tr><th>#</th><th>Zone</th><th>পেজ সমূহ</th><th>সংখ্যা</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>🌐 Public Website</td><td>Home, About, Services ×6 Detail, Pricing, Contact</td><td class="center">১১</td></tr>
+    <tr><td>2</td><td>🔐 Auth + Onboarding</td><td>Login/OTP, Onboarding Wizard</td><td class="center">২</td></tr>
+    <tr><td>3</td><td>👨‍👩‍👧 Customer Portal</td><td>Dashboard, SOS Flow, Profile, Vault, Booking, Subscription, Notifications, Payments</td><td class="center">৮</td></tr>
+    <tr><td>4</td><td>🏥 Caregiver Portal</td><td>Dashboard, Availability, Profile, Earnings, Reviews</td><td class="center">৫</td></tr>
+    <tr><td>5</td><td>🛡️ Admin Panel</td><td>Dashboard, Emergency Center, Dispatch, KYC, User Mgmt, Analytics</td><td class="center">৬</td></tr>
+    <tr><td>6</td><td>🤝 Partners Portal</td><td>Dashboard, Report Upload, Partner Onboarding</td><td class="center">৩</td></tr>
+    <tr><td colspan="3" style="text-align:right;font-weight:700;">মোট</td><td class="center" style="font-weight:800;color:#1A5C8C;font-size:13pt;">৩৫</td></tr>
+  </tbody>
+</table>
+
+<div class="summary-box avoid-break">
+  <h2 style="justify-content:center;">মোট পেজ সারসংক্ষেপ</h2>
+  <div class="summary-grid">
+    <div class="summary-item"><div class="num">১১</div><div class="lbl">🌐 Public</div></div>
+    <div class="summary-item"><div class="num">২</div><div class="lbl">🔐 Auth</div></div>
+    <div class="summary-item"><div class="num">৮</div><div class="lbl">👨‍👩‍👧 Customer</div></div>
+    <div class="summary-item"><div class="num">৫</div><div class="lbl">🏥 Caregiver</div></div>
+    <div class="summary-item"><div class="num">৬</div><div class="lbl">🛡️ Admin</div></div>
+    <div class="summary-item"><div class="num">৩</div><div class="lbl">🤝 Partners</div></div>
+  </div>
+</div>
+
+<!-- DESIGN SYSTEM -->
+<h1>Design System</h1>
+<div class="grid-2">
+  <div>
+    <h3>Color Palette</h3>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#1A5C8C">Primary<br>#1A5C8C</div>
+      <div class="swatch" style="background:#F4A836;color:#333">Accent<br>#F4A836</div>
+      <div class="swatch" style="background:#DC2626">SOS<br>#DC2626</div>
+      <div class="swatch" style="background:#16A34A">OK<br>#16A34A</div>
+    </div>
+  </div>
+  <div>
+    <h3>Tech Stack</h3>
+    <ul class="feature-list">
+      <li><strong>Framework:</strong> Next.js 14 App Router + TypeScript</li>
+      <li><strong>Styling:</strong> Tailwind CSS + Custom Design Tokens</li>
+      <li><strong>Icons:</strong> Lucide React</li>
+      <li><strong>Fonts:</strong> Inter + Hind Siliguri (Bengali)</li>
+      <li><strong>Images:</strong> AI-generated for hero &amp; team</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Shared Components (সব পেজে থাকবে)</h3>
+<table>
+  <thead><tr><th>Component</th><th>বিবরণ</th></tr></thead>
+  <tbody>
+    <tr><td>Navbar</td><td>লোগো, নেভ লিংক, Language Toggle (BN/EN), Login বাটন, 🔔 Notification Bell</td></tr>
+    <tr><td>Footer</td><td>ঠিকানা, হটলাইন, সোশ্যাল আইকন, সাইটম্যাপ লিংক</td></tr>
+    <tr><td>SOSButton</td><td>সব পেজে ডানে ভাসমান লাল বাটন, ক্লিক করলে SOS Modal</td></tr>
+    <tr><td>AccessibilityBar</td><td>ফন্ট +/- বাটন + High Contrast টগল (বয়স্কদের জন্য)</td></tr>
+    <tr><td>MobileBottomNav</td><td>মোবাইলে: Home / Services / Book / Profile (App-like experience)</td></tr>
+    <tr><td>LanguageContext</td><td>BN ↔ EN টগল, সব টেক্সট পরিবর্তন করে</td></tr>
+  </tbody>
+</table>
+
+<!-- RBAC -->
+<h1>Role-Based Access Control (RBAC)</h1>
+<table>
+  <thead>
+    <tr><th>Feature / Zone</th><th class="center">🌐 Public</th><th class="center">👨‍👩‍👧 Customer</th><th class="center">🏥 Caregiver</th><th class="center">🛡️ Admin</th><th class="center">🤝 Partner</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Public Pages (Home → Contact)</td><td class="center check">✅</td><td class="center check">✅</td><td class="center check">✅</td><td class="center check">✅</td><td class="center check">✅</td></tr>
+    <tr><td>Login / Register / Onboarding</td><td class="center check">✅</td><td class="center cross">—</td><td class="center cross">—</td><td class="center cross">—</td><td class="center cross">—</td></tr>
+    <tr><td>Client Dashboard, Profile, Vault, Booking</td><td class="center cross">—</td><td class="center check">✅</td><td class="center cross">—</td><td class="center cross">—</td><td class="center cross">—</td></tr>
+    <tr><td>Subscription, Notifications, Payments</td><td class="center cross">—</td><td class="center check">✅</td><td class="center cross">—</td><td class="center cross">—</td><td class="center cross">—</td></tr>
+    <tr><td>Provider Dashboard, Availability, Earnings</td><td class="center cross">—</td><td class="center cross">—</td><td class="center check">✅</td><td class="center cross">—</td><td class="center cross">—</td></tr>
+    <tr><td>Admin Dashboard, Emergency, Dispatch, KYC</td><td class="center cross">—</td><td class="center cross">—</td><td class="center cross">—</td><td class="center check">✅</td><td class="center cross">—</td></tr>
+    <tr><td>Partners Dashboard, Upload, Onboarding</td><td class="center cross">—</td><td class="center cross">—</td><td class="center cross">—</td><td class="center cross">—</td><td class="center check">✅</td></tr>
+  </tbody>
+</table>
+
+<!-- ZONE 1 -->
+<div class="zone-banner avoid-break">
+  <h2>Zone 1: Public Website</h2>
+  <div class="zone-count">১১টি পেজ</div>
+</div>
+
+<h3>পেজ ১ — Home Page (/)</h3>
+<div class="grid-2">
+  <div class="card card-primary avoid-break">
+    <h4>Hero Section</h4>
+    <ul class="feature-list">
+      <li>AI-generated ছবি (নার্স + বয়স্ক মানুষ)</li>
+      <li>বাংলা হেডলাইন: আবেগময়, বিশ্বাসযোগ্য</li>
+      <li>CTA: "সার্ভিস বুক করুন" + "জরুরি কল"</li>
+      <li>Trust indicator row (৫০০+ পরিবার)</li>
+    </ul>
+  </div>
+  <div class="card card-accent avoid-break">
+    <h4>How It Works</h4>
+    <ul class="feature-list">
+      <li>৩টি অ্যানিমেটেড স্টেপ কার্ড</li>
+      <li>অ্যাকাউন্ট → সার্ভিস → নিশ্চিন্ত</li>
+      <li>আইকন + সংক্ষিপ্ত বর্ণনা</li>
+    </ul>
+  </div>
+  <div class="card card-primary avoid-break">
+    <h4>Our 6 Services</h4>
+    <ul class="feature-list">
+      <li>৬টি ইন্টারেক্টিভ কার্ড গ্রিড</li>
+      <li>Hover-এ বিস্তারিত, ক্লিক করলে Detail পেজ</li>
+    </ul>
+  </div>
+  <div class="card card-success avoid-break">
+    <h4>Trust &amp; Testimonials</h4>
+    <ul class="feature-list">
+      <li>Trust badges: Verified, Insured, 24/7</li>
+      <li>Testimonials slider (অটো-প্লে)</li>
+    </ul>
+  </div>
+</div>
+
+<h3>পেজ ২ — About Us | পেজ ৩ — Services Overview</h3>
+<div class="grid-2">
+  <div class="card card-primary">
+    <h4>About Us (/about)</h4>
+    <ul class="feature-list">
+      <li>Mission Timeline + Founder's Note</li>
+      <li>Numbers: ৫০০+ পরিবার, ৯৮% সন্তুষ্টি</li>
+      <li>Team Grid: AI ছবি, নাম, পদবী, বায়ো</li>
+    </ul>
+  </div>
+  <div class="card card-accent">
+    <h4>Services Overview (/services)</h4>
+    <ul class="feature-list">
+      <li>৬টি কার্ড গ্রিড + সার্চ/ফিল্টার</li>
+      <li>প্রতিটিতে "বিস্তারিত দেখুন" লিংক</li>
+    </ul>
+  </div>
+</div>
+
+<h3>পেজ ৪–৯ — ৬টি Service Detail Pages</h3>
+<table>
+  <thead><tr><th>URL</th><th>সেবা</th><th>বিশেষ ফিচার</th></tr></thead>
+  <tbody>
+    <tr><td>/services/diagnostic</td><td>ডায়াগনস্টিক</td><td>পার্টনার সেন্টার লিস্ট, হোম ভিজিট অপশন</td></tr>
+    <tr><td>/services/doctor</td><td>চিকিৎসক</td><td>Telemedicine টগল, স্পেশালিটি ফিল্টার</td></tr>
+    <tr><td>/services/medicine</td><td>ঔষধ</td><td>প্রেসক্রিপশন আপলোড → কোটেশন ফ্লো</td></tr>
+    <tr><td>/services/emergency</td><td>জরুরি</td><td>SOS ফ্লো ব্যাখ্যা, অ্যাম্বুলেন্স নম্বর</td></tr>
+    <tr><td>/services/daily</td><td>দৈনন্দিন</td><td>Companion + Transport কম্বো অপশন</td></tr>
+    <tr><td>/services/companion</td><td>মানসিক সঙ্গ</td><td>কেয়ারগিভার ব্রাউজ (শখ, ভাষা, ব্যক্তিত্ব)</td></tr>
+  </tbody>
+</table>
+
+<h3>পেজ ১০ — Pricing (/pricing)</h3>
+<table>
+  <thead><tr><th>ফিচার</th><th class="center">One-time</th><th class="center">Basic Monthly</th><th class="center">Premium Care</th></tr></thead>
+  <tbody>
+    <tr><td>যেকোনো সার্ভিস বুক</td><td class="center check">✅</td><td class="center check">✅</td><td class="center check">✅</td></tr>
+    <tr><td>Medical Vault</td><td class="center cross">❌</td><td class="center check">✅</td><td class="center check">✅</td></tr>
+    <tr><td>ডেডিকেটেড কেয়ারগিভার</td><td class="center cross">❌</td><td class="center cross">❌</td><td class="center check">✅</td></tr>
+    <tr><td>২৪/৭ হেলথ মনিটরিং</td><td class="center cross">❌</td><td class="center cross">❌</td><td class="center check">✅</td></tr>
+    <tr><td>Family Sharing (NRB)</td><td class="center cross">❌</td><td class="center cross">❌</td><td class="center check">✅</td></tr>
+  </tbody>
+</table>
+
+<h3>পেজ ১১ — Contact &amp; Helpdesk (/contact)</h3>
+<ul class="feature-list">
+  <li>২৪/৭ হটলাইন কার্ড (বড় ফন্ট) + WhatsApp বাটন</li>
+  <li>ফিজিক্যাল ঠিকানা + Google Map iframe</li>
+  <li>Contact Form + FAQ Accordion</li>
+</ul>
+
+<!-- ZONE 2 -->
+<div class="zone-banner avoid-break">
+  <h2>Zone 2: Authentication + Onboarding</h2>
+  <div class="zone-count">২টি পেজ</div>
+</div>
+
+<h3>পেজ ১২ — Login / Register (/login)</h3>
+<ul class="feature-list">
+  <li>Step 1: ফোন নম্বর → "OTP পাঠান"</li>
+  <li>Step 2: ৬-ডিজিট OTP বক্স + ৬০ সেকেন্ড টাইমার</li>
+  <li>Step 3: Role সিলেকশন — Customer / Caregiver / Partner</li>
+  <li>প্রথমবার হলে: নাম ও ইমেইল ইনপুট</li>
+</ul>
+
+<h3>পেজ ১৩ — Onboarding Wizard (/onboarding) <span class="badge badge-new">নতুন ⭐</span></h3>
+<ul class="feature-list">
+  <li>Step 1: নিজের প্রোফাইল (নাম, ঠিকানা, ফোটো)</li>
+  <li>Step 2: রোগীর তথ্য (বয়স, ব্লাড গ্রুপ, রোগের ইতিহাস, অ্যালার্জি)</li>
+  <li>Step 3: জরুরি যোগাযোগ (স্থানীয় পরিচিত ব্যক্তির নম্বর)</li>
+  <li>Step 4: প্রথম সার্ভিস বুক করুন অথবা "পরে করব" (Skip)</li>
+  <li>Progress Bar সহ — নতুন ইউজারকে গাইড করে</li>
+</ul>
+
+<!-- ZONE 3 -->
+<div class="zone-banner avoid-break">
+  <h2>Zone 3: Customer Portal</h2>
+  <div class="zone-count">৮টি পেজ</div>
+</div>
+
+<h3>পেজ ১৪ — Client Dashboard (/dashboard)</h3>
+<table>
+  <thead><tr><th>Widget</th><th>বিবরণ</th></tr></thead>
+  <tbody>
+    <tr><td>Welcome Banner</td><td>"শুভ সকাল, [নাম]! আপনার বাবার সার্ভিস আজ বিকাল ৩টায়।"</td></tr>
+    <tr><td>Active Booking Card</td><td>কেয়ারগিভারের নাম, ETA, স্ট্যাটাস ব্যাজ</td></tr>
+    <tr><td>Live Tracking Timeline</td><td>নিযুক্ত → রওনা (In Transit) → পৌঁছেছেন → সম্পন্ন</td></tr>
+    <tr><td>Quick Book</td><td>পুরনো সার্ভিস এক ক্লিকে রি-অর্ডার</td></tr>
+    <tr><td>NRB Time Widget ⭐</td><td>বাংলাদেশ সময় + ব্যবহারকারীর লোকাল টাইমজোন</td></tr>
+    <tr><td>Recent Notifications</td><td>শেষ ৫টি আপডেট</td></tr>
+  </tbody>
+</table>
+
+<h3>পেজ ১৫ — SOS Full Flow Modal <span class="badge badge-new">নতুন ⭐</span></h3>
+<div class="alert alert-emergency avoid-break">
+  <span>🚨</span>
+  <span>SOS বাটন চাপলে full-screen overlay — সব পেজ থেকে অ্যাক্সেসযোগ্য। Admin-কে সমান্তরালে অ্যালার্ট যাবে।</span>
+</div>
+<ul class="feature-list">
+  <li>Step 1: "সাহায্য দরকার?" — Confirm বাটন</li>
+  <li>Step 2: জরুরি ধরন — হার্টঅ্যাটাক / পড়ে গেছেন / শ্বাসকষ্ট / অন্যান্য</li>
+  <li>Step 3: "সাহায্য পাঠানো হচ্ছে..." + ETA কাউন্টডাউন</li>
+  <li>Step 4: নিকটস্থ হাসপাতাল নাম + অ্যাম্বুলেন্স নম্বর</li>
+</ul>
+
+<h3>পেজ ১৬ — Patient Profile (/dashboard/profile)</h3>
+<table>
+  <thead><tr><th>ট্যাব</th><th>কী থাকবে</th></tr></thead>
+  <tbody>
+    <tr><td>আমার প্রোফাইল</td><td>নাম, ফোন, ইমেইল, ঠিকানা, প্রোফাইল ছবি</td></tr>
+    <tr><td>পরিবারের সদস্য</td><td>কার্ড ভিউ — বয়স, ব্লাড গ্রুপ, রোগের ইতিহাস, অ্যালার্জি, নিয়মিত ওষুধ</td></tr>
+    <tr><td>জরুরি যোগাযোগ</td><td>স্থানীয় পরিচিত, নিকটতম হাসপাতাল</td></tr>
+    <tr><td>NRB Settings ⭐</td><td>টাইমজোন সিলেক্ট, Family Sharing (Premium), নোটিফিকেশন প্রেফারেন্স</td></tr>
+  </tbody>
+</table>
+
+<h3>পেজ ১৭ — Medical Vault (/dashboard/vault)</h3>
+<ul class="feature-list">
+  <li>ফ্যামিলি মেম্বার সিলেক্টর (উপরে)</li>
+  <li>ফোল্ডার: টেস্ট রিপোর্ট / প্রেসক্রিপশন / হাসপাতাল ডকুমেন্ট / ইমেজিং (X-Ray, CT)</li>
+  <li>ফাইল আপলোড (ফাইল বা ক্যামেরা)</li>
+  <li>শেয়ার লিংক জেনারেট — Time-limited (ডাক্তারের জন্য)</li>
+  <li>Empty State: "প্রথম ডকুমেন্টটি আপলোড করুন"</li>
+</ul>
+
+<h3>পেজ ১৮ — Booking Engine (/dashboard/book)</h3>
+<table>
+  <thead><tr><th>Step</th><th>কী থাকবে</th></tr></thead>
+  <tbody>
+    <tr><td>Step 1 — সার্ভিস</td><td>৬টি কার্ড, One-time/Subscription টগল, সার্ভিস-ভিত্তিক sub-options (ওষুধ→প্রেসক্রিপশন, ডাক্তার→Telemedicine)</td></tr>
+    <tr><td>Step 2 — সময় + লোকেশন</td><td>ক্যালেন্ডার + টাইম স্লট গ্রিড, ঠিকানা + ম্যাপ পিন, "কার জন্য?" ড্রপডাউন</td></tr>
+    <tr><td>Step 3 — পেমেন্ট</td><td>অর্ডার সামারি, bKash / নগদ / Visa / Cash, আন্তর্জাতিক কার্ড (NRB ⭐), কনফার্মেশন নম্বর</td></tr>
+  </tbody>
+</table>
+
+<h3>পেজ ১৯–২১ — Subscription, Notifications, Payments</h3>
+<div class="grid-3">
+  <div class="card card-primary">
+    <h4>Subscription ⭐</h4>
+    <ul class="feature-list">
+      <li>বর্তমান প্ল্যান কার্ড</li>
+      <li>Pause / Cancel / Upgrade</li>
+      <li>পেমেন্ট হিস্ট্রি</li>
+    </ul>
+  </div>
+  <div class="card card-accent">
+    <h4>Notifications</h4>
+    <ul class="feature-list">
+      <li>ফিল্টার: সব / বুকিং / পেমেন্ট</li>
+      <li>Read/Unread indicator</li>
+      <li>"সব মার্ক করুন"</li>
+    </ul>
+  </div>
+  <div class="card card-success">
+    <h4>Payments</h4>
+    <ul class="feature-list">
+      <li>ইনভয়েস লিস্ট</li>
+      <li>PDF ডাউনলোড</li>
+      <li>মাসওয়ারি ফিল্টার</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ZONE 4 -->
+<div class="zone-banner avoid-break">
+  <h2>Zone 4: Caregiver Portal</h2>
+  <div class="zone-count">৫টি পেজ</div>
+</div>
+
+<h3>পেজ ২২ — Provider Dashboard (/provider)</h3>
+<table>
+  <thead><tr><th>সেকশন</th><th>বিবরণ</th></tr></thead>
+  <tbody>
+    <tr><td>টাস্ক কার্ড</td><td>ক্লায়েন্টের নাম, ঠিকানা, সার্ভিস, সময় + Accept ✅ / Reject ❌</td></tr>
+    <tr><td>Active Task বার</td><td>"Start Duty" → স্টপওয়াচ → "Reached" → "Task Completed" + রিপোর্ট আপলোড প্রম্পট</td></tr>
+    <tr><td>রিপোর্ট আপলোড</td><td>ছবি তুলে ক্লায়েন্টের Medical Vault-এ সরাসরি পাঠানো</td></tr>
+    <tr><td>Earning Today</td><td>আজকের আয় + গড় রেটিং বক্স</td></tr>
+  </tbody>
+</table>
+
+<h3>পেজ ২৩–২৬ — Availability, Profile, Earnings, Reviews</h3>
+<table>
+  <thead><tr><th>পেজ</th><th>কী থাকবে</th></tr></thead>
+  <tbody>
+    <tr><td>Availability ⭐ (/provider/availability)</td><td>সাপ্তাহিক ক্যালেন্ডার টগল, সার্ভিস-টাইপ সিলেকশন, "ছুটি নিন" বাটন</td></tr>
+    <tr><td>Profile (/provider/profile)</td><td>ছবি, NID, সার্টিফিকেট, স্পেশালাইজেশন, শখ/ভাষা, KYC ব্যাজ</td></tr>
+    <tr><td>Earnings (/provider/earnings)</td><td>মাসওয়ারি বার চার্ট, টাস্ক হিস্ট্রি, পেমেন্ট রিকোয়েস্ট বাটন</td></tr>
+    <tr><td>Reviews ⭐ (/provider/reviews)</td><td>স্টার রেটিং কার্ড লিস্ট, ক্লায়েন্টের মন্তব্য, গড় রেটিং</td></tr>
+  </tbody>
+</table>
+
+<!-- ZONE 5 -->
+<div class="zone-banner avoid-break">
+  <h2>Zone 5: Admin Control Panel</h2>
+  <div class="zone-count">৬টি পেজ</div>
+</div>
+
+<h3>পেজ ২৭ — Admin Dashboard (/admin)</h3>
+<ul class="feature-list">
+  <li>KPI Row: আজকের বুকিং / অ্যাক্টিভ কেয়ারগিভার / পেন্ডিং KYC / মাসিক রেভিনিউ</li>
+  <li>Emergency Alert Pod: লাল ফ্ল্যাশ + অডিও অ্যালার্ট</li>
+  <li>Recent Orders লাইভ ফিড + Quick Action Links</li>
+</ul>
+
+<h3>পেজ ২৮–৩২ — Emergency, Dispatch, KYC, User Mgmt, Analytics</h3>
+<table>
+  <thead><tr><th>পেজ</th><th>URL</th><th>বিবরণ</th></tr></thead>
+  <tbody>
+    <tr><td>Emergency Center ⭐</td><td>/admin/emergency</td><td>লাইভ SOS ফিড, রোগের ইতিহাস দেখার বাটন, অ্যাম্বুলেন্স ডিসপ্যাচ, অ্যালার্ট লগ</td></tr>
+    <tr><td>Dispatch &amp; Matching</td><td>/admin/dispatch</td><td>রিকোয়েস্ট লিস্ট + ম্যাপ ভিউ, Auto-suggest কেয়ারগিভার, Assign বাটন</td></tr>
+    <tr><td>KYC Verification</td><td>/admin/verification</td><td>পেন্ডিং লিস্ট, NID ছবি, সেলফি, Approve ✅ / Reject ❌ + কারণ</td></tr>
+    <tr><td>User Management ⭐</td><td>/admin/users</td><td>Customer / Caregiver / Partner ট্যাব, সার্চ, Suspend / Reactivate বাটন</td></tr>
+    <tr><td>Analytics</td><td>/admin/analytics</td><td>রেভিনিউ চার্ট, সার্ভিসওয়ারি পাই, কেয়ারগিভার পারফরম্যান্স, NRB vs Local অনুপাত</td></tr>
+  </tbody>
+</table>
+
+<!-- ZONE 6 -->
+<div class="zone-banner avoid-break">
+  <h2>Zone 6: Partners Portal</h2>
+  <div class="zone-count">৩টি পেজ</div>
+</div>
+
+<table>
+  <thead><tr><th>পেজ</th><th>URL</th><th>বিবরণ</th></tr></thead>
+  <tbody>
+    <tr><td>Dashboard</td><td>/partners</td><td>অপেক্ষমান অর্ডার কার্ড, Accept / Mark Fulfilled, আজকের আয়</td></tr>
+    <tr><td>Report Upload</td><td>/partners/upload</td><td>অর্ডার সিলেক্ট → PDF/ছবি আপলোড → ক্লায়েন্টের Vault-এ পাঠানো</td></tr>
+    <tr><td>Partner Onboarding ⭐</td><td>/partners/register</td><td>ব্যবসার নাম, ধরন, ট্রেড লাইসেন্স → Admin অ্যাপ্রুভাল অপেক্ষা স্ট্যাটাস পেজ</td></tr>
+  </tbody>
+</table>
+
+<!-- CROSS-CUTTING -->
+<h1>Cross-cutting Features</h1>
+
+<div class="grid-2">
+  <div class="card card-success avoid-break">
+    <h4>⭐ Rating &amp; Review System</h4>
+    <ul class="feature-list">
+      <li>ট্রিগার: "Task Completed" → ক্লায়েন্ট নোটিফিকেশন</li>
+      <li>৫-স্টার রেটিং + ঐচ্ছিক মন্তব্য popup</li>
+      <li>কেয়ারগিভার প্রোফাইলে দেখাবে</li>
+      <li>Admin Analytics-এ অন্তর্ভুক্ত</li>
+    </ul>
+  </div>
+  <div class="card card-accent avoid-break">
+    <h4>⭐ Empty States</h4>
+    <ul class="feature-list">
+      <li>Dashboard (বুকিং নেই): "প্রথম সার্ভিস বুক করুন!"</li>
+      <li>Vault (ফাঁকা): "প্রথম ডকুমেন্ট আপলোড করুন"</li>
+      <li>Provider (টাস্ক নেই): "আজ বিশ্রাম নিন! 😊"</li>
+    </ul>
+  </div>
+</div>
+
+<!-- BUILD ORDER -->
+<h1>Build Order (Chunk-wise)</h1>
+<table>
+  <thead><tr><th>Chunk</th><th>কাজ</th><th>পেজ</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Chunk 0</strong></td><td>Project setup + Design System + Shared Components</td><td>—</td></tr>
+    <tr><td><strong>Chunk 1</strong></td><td>Public Website</td><td>পেজ ১–১১</td></tr>
+    <tr><td><strong>Chunk 2</strong></td><td>Auth + Onboarding</td><td>পেজ ১২–১৩</td></tr>
+    <tr><td><strong>Chunk 3</strong></td><td>Customer Portal</td><td>পেজ ১৪–২১</td></tr>
+    <tr><td><strong>Chunk 4</strong></td><td>Caregiver Portal</td><td>পেজ ২২–২৬</td></tr>
+    <tr><td><strong>Chunk 5</strong></td><td>Admin Panel</td><td>পেজ ২৭–৩২</td></tr>
+    <tr><td><strong>Chunk 6</strong></td><td>Partners Portal</td><td>পেজ ৩৩–৩৫</td></tr>
+    <tr><td><strong>Chunk 7</strong></td><td>Rating System + Empty States + Final Polish</td><td>সব পেজে</td></tr>
+  </tbody>
+</table>
+
+<div class="page-footer">
+  নির্ভার কেয়ার প্রাইভেট লিমিটেড | UI/UX Implementation Plan v3.0 | মার্চ ২০২৬ | Confidential Document
+</div>
+
+</div>
+</body>
+</html>
