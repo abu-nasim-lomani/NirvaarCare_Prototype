@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Heart, Phone, Bell, Menu, X, Globe } from 'lucide-react';
 import { useAuth } from '@/components/context/AuthContext';
 import { useLang } from '@/components/context/LanguageContext';
@@ -11,6 +12,10 @@ export default function Navbar() {
     const { lang, setLang, t } = useLang();
     const { incFont, decFont, toggleContrast } = useA11y();
     const [menuOpen, setMenuOpen] = useState(false);
+    const pathname = usePathname();
+
+    // Foundation pages have their own dedicated navbar
+    if (pathname.startsWith('/foundation')) return null;
 
     const portalLink = role === 'caregiver' ? '/provider' : role === 'admin' ? '/admin' : role === 'partner' ? '/partners' : '/dashboard';
 
@@ -30,6 +35,7 @@ export default function Navbar() {
                     <div className="hidden md:flex items-center gap-6">
                         <Link href="/services" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('সেবাসমূহ', 'Services')}</Link>
                         <Link href="/pricing" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('প্যাকেজ', 'Pricing')}</Link>
+                        <Link href="/foundation" className="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors flex items-center gap-1"><Heart className="w-3.5 h-3.5" />{t('ফাউন্ডেশন', 'Foundation')}</Link>
                         <Link href="/about" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('আমাদের সম্পর্কে', 'About')}</Link>
                         <Link href="/team" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('আমাদের টিম', 'Team')}</Link>
                         <Link href="/contact" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('যোগাযোগ', 'Contact')}</Link>
@@ -84,8 +90,8 @@ export default function Navbar() {
             {/* Mobile menu */}
             {menuOpen && (
                 <div className="md:hidden bg-white border-t border-gray-100 px-4 py-3 space-y-2">
-                    {[['সেবাসমূহ', 'Services', '/services'], ['প্যাকেজ', 'Pricing', '/pricing'], ['আমাদের সম্পর্কে', 'About', '/about'], ['আমাদের টিম', 'Team', '/team'], ['যোগাযোগ', 'Contact', '/contact']].map(([bn, en, href]) => (
-                        <Link key={href} href={href} onClick={() => setMenuOpen(false)} className="block text-sm py-2 text-gray-700 hover:text-primary border-b border-gray-50">{t(bn, en)}</Link>
+                    {[['সেবাসমূহ', 'Services', '/services'], ['প্যাকেজ', 'Pricing', '/pricing'], ['ফাউন্ডেশন', 'Foundation', '/foundation'], ['আমাদের সম্পর্কে', 'About', '/about'], ['আমাদের টিম', 'Team', '/team'], ['যোগাযোগ', 'Contact', '/contact']].map(([bn, en, href]) => (
+                        <Link key={href} href={href} onClick={() => setMenuOpen(false)} className={`block text-sm py-2 hover:text-primary border-b border-gray-50 ${href === '/foundation' ? 'text-teal-600 font-bold' : 'text-gray-700'}`}>{t(bn, en)}</Link>
                     ))}
                     {isLoggedIn && <Link href={portalLink} onClick={() => setMenuOpen(false)} className="block text-sm py-2 text-primary font-medium">{t('ড্যাশবোর্ড', 'Dashboard')}</Link>}
                     <div className="flex gap-2 pt-2">

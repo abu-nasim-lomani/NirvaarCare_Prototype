@@ -1,10 +1,16 @@
 'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Heart, Phone, Mail, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
 import { useLang } from '@/components/context/LanguageContext';
 
 export default function Footer() {
     const { t } = useLang();
+    const pathname = usePathname();
+
+    // Foundation pages have their own footer
+    if (pathname.startsWith('/foundation')) return null;
+
     return (
         <footer className="bg-primary-dark text-white mt-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
