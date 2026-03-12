@@ -61,13 +61,17 @@ export default function ContactPage() {
                             </div>
                         </div>
 
-                        {/* Map placeholder */}
-                        <div className="bg-primary/10 rounded-2xl h-48 flex items-center justify-center border-2 border-primary/20">
-                            <div className="text-center text-primary/60">
-                                <MapPin className="w-8 h-8 mx-auto mb-2" />
-                                <p className="text-sm">{t('গুগল ম্যাপ লোড হচ্ছে...', 'Google Map loading...')}</p>
-                                <p className="text-xs mt-1">{t('গুলশান-১, ঢাকা', 'Gulshan-1, Dhaka')}</p>
-                            </div>
+                        {/* Google Map */}
+                        <div className="bg-gray-100 rounded-2xl h-64 w-full overflow-hidden border border-gray-200">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.1394186595567!2d90.4101884!3d23.7780447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c770ce66d213%3A0x6e9ec19d14fc11c1!2sGulshan%201%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1716900000000!5m2!1sen!2sbd"
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0 }}
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                            ></iframe>
                         </div>
                     </div>
 

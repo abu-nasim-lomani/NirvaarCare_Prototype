@@ -6,6 +6,7 @@ import { AccessibilityProvider } from '@/components/context/AccessibilityContext
 import Navbar from '@/components/shared/Navbar';
 import Footer from '@/components/shared/Footer';
 import SOSButton from '@/components/shared/SOSButton';
+import WhatsAppWidget from '@/components/shared/WhatsAppWidget';
 import MobileBottomNav from '@/components/shared/MobileBottomNav';
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             </main>
                             <Footer />
                             <SOSButton />
+                            <WhatsAppWidget />
                             <MobileBottomNav />
                         </AccessibilityProvider>
                     </LanguageProvider>

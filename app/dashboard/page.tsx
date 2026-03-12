@@ -5,6 +5,7 @@ import { Calendar, Bell, ArrowRight, Clock, CheckCircle, AlertTriangle, Globe } 
 import { useAuth } from '@/components/context/AuthContext';
 import { useLang } from '@/components/context/LanguageContext';
 import RatingModal from '@/components/shared/RatingModal';
+import LiveTrackingMap from '@/components/shared/LiveTrackingMap';
 
 const ACTIVE_BOOKING = { id: 'BK001', service: 'ডায়াগনস্টিক সেবা', caregiver: 'ফারিদা নার্স', time: 'আজ, ১১:০০ AM', eta: '৫ মিনিট' };
 const RECENT_BOOKINGS = [
@@ -85,6 +86,11 @@ export default function CustomerDashboard() {
                     ))}
                 </div>
 
+                {/* Live Map Component */}
+                <div className="mb-4">
+                    <LiveTrackingMap caregiver={ACTIVE_BOOKING.caregiver} eta={ACTIVE_BOOKING.eta} />
+                </div>
+
                 <div className="flex items-center justify-between bg-success/10 rounded-xl p-3">
                     <div className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
@@ -136,8 +142,8 @@ export default function CustomerDashboard() {
                     <div className="bg-white rounded-2xl border border-gray-100 p-4">
                         <h3 className="font-bold text-gray-800 mb-3 text-sm">{t('দ্রুত রি-বুক', 'Quick Rebook')}</h3>
                         <div className="space-y-2">
-                            {[{ icon: '🔬', name: 'ডায়াগনস্টিক সেবা' }, { icon: '👨‍⚕️', name: 'চিকিৎসক সেবা' }].map(s => (
-                                <Link key={s.name} href="/dashboard/book" className="flex items-center gap-2 p-2.5 bg-gray-50 rounded-xl hover:bg-primary/5 hover:border-primary border border-transparent transition-all">
+                            {[{ icon: '🔬', name: 'ডায়াগনস্টিক সেবা', id: 'diagnostic' }, { icon: '👨‍⚕️', name: 'চিকিৎসক সেবা', id: 'doctor' }].map(s => (
+                                <Link key={s.name} href={`/dashboard/book?service=${s.id}`} className="flex items-center gap-2 p-2.5 bg-gray-50 rounded-xl hover:bg-primary/5 hover:border-primary border border-transparent transition-all">
                                     <span>{s.icon}</span>
                                     <span className="text-sm text-gray-700 flex-1">{s.name}</span>
                                     <ArrowRight className="w-4 h-4 text-primary" />

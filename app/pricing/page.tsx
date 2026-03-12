@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Check, X, ArrowRight, ChevronDown } from 'lucide-react';
 import { useLang } from '@/components/context/LanguageContext';
+import PackageQuiz from '@/components/shared/PackageQuiz';
 
 const PLANS = [
     {
@@ -95,6 +96,15 @@ export default function PricingPage() {
                         </div>
                     ))}
                 </div>
+            </section>
+
+            {/* Package Quiz */}
+            <section className="py-12 bg-white max-w-4xl mx-auto px-4">
+                <div className="text-center mb-10">
+                    <h2 className="text-3xl font-black text-primary-dark">{t('কোন প্যাকেজটি আপনার জন্য?', 'Which package is for you?')}</h2>
+                    <p className="text-gray-500 mt-2">{t('ছোট এই কুইজটি খেলে জেনে নিন আপনার জন্য সেরা প্যাকেজ কোনটি।', 'Take this short quiz to find out the best package for you.')}</p>
+                </div>
+                <PackageQuiz />
             </section>
 
             {/* FAQ */}

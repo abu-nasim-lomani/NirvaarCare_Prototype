@@ -39,7 +39,7 @@ export default function Footer() {
                     <div>
                         <h4 className="font-semibold text-accent mb-3">{t('প্রতিষ্ঠান', 'Company')}</h4>
                         <ul className="space-y-2 text-sm text-gray-300">
-                            {[['আমাদের সম্পর্কে', 'About', '/about'], ['মূল্য ও প্যাকেজ', 'Pricing', '/pricing'], ['যোগাযোগ', 'Contact', '/contact'], ['পার্টনার হন', 'Become a Partner', '/partners/register'], ['কেয়ারগিভার হন', 'Become a Caregiver', '/login']].map(([bn, en, href]) => (
+                            {[['আমাদের সম্পর্কে', 'About', '/about'], ['আমাদের টিম', 'Team', '/team'], ['মূল্য ও প্যাকেজ', 'Pricing', '/pricing'], ['যোগাযোগ', 'Contact', '/contact'], ['পার্টনার হন', 'Become a Partner', '/partners/register'], ['কেয়ারগিভার হন', 'Become a Caregiver', '/login']].map(([bn, en, href]) => (
                                 <li key={href}><Link href={href} className="hover:text-accent transition-colors">{t(bn, en)}</Link></li>
                             ))}
                         </ul>

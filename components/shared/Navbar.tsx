@@ -31,6 +31,7 @@ export default function Navbar() {
                         <Link href="/services" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('সেবাসমূহ', 'Services')}</Link>
                         <Link href="/pricing" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('প্যাকেজ', 'Pricing')}</Link>
                         <Link href="/about" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('আমাদের সম্পর্কে', 'About')}</Link>
+                        <Link href="/team" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('আমাদের টিম', 'Team')}</Link>
                         <Link href="/contact" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('যোগাযোগ', 'Contact')}</Link>
                     </div>
 
@@ -83,7 +84,7 @@ export default function Navbar() {
             {/* Mobile menu */}
             {menuOpen && (
                 <div className="md:hidden bg-white border-t border-gray-100 px-4 py-3 space-y-2">
-                    {[['সেবাসমূহ', 'Services', '/services'], ['প্যাকেজ', 'Pricing', '/pricing'], ['আমাদের সম্পর্কে', 'About', '/about'], ['যোগাযোগ', 'Contact', '/contact']].map(([bn, en, href]) => (
+                    {[['সেবাসমূহ', 'Services', '/services'], ['প্যাকেজ', 'Pricing', '/pricing'], ['আমাদের সম্পর্কে', 'About', '/about'], ['আমাদের টিম', 'Team', '/team'], ['যোগাযোগ', 'Contact', '/contact']].map(([bn, en, href]) => (
                         <Link key={href} href={href} onClick={() => setMenuOpen(false)} className="block text-sm py-2 text-gray-700 hover:text-primary border-b border-gray-50">{t(bn, en)}</Link>
                     ))}
                     {isLoggedIn && <Link href={portalLink} onClick={() => setMenuOpen(false)} className="block text-sm py-2 text-primary font-medium">{t('ড্যাশবোর্ড', 'Dashboard')}</Link>}

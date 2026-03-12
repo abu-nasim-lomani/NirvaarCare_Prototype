@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, Suspense, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Calendar, MapPin, Search, ArrowRight, Activity, Clock, Shield, Upload } from 'lucide-react';
 import { useLang } from '@/components/context/LanguageContext';
@@ -20,10 +21,20 @@ const CAREGIVERS = [
     { id: 'cg2', name: 'করিম হোসেন', age: 28, langs: ['বাংলা'], hobbies: ['বই পড়া', 'ধর্মীয় আলোচনা'], rating: 4.7 },
 ];
 
-export default function BookingWizard() {
+function BookingForm() {
     const { t } = useLang();
+    const searchParams = useSearchParams();
+    const preSvc = searchParams.get('service');
+
     const [step, setStep] = useState(1);
     const [svcId, setSvcId] = useState('');
+
+    useEffect(() => {
+        if (preSvc) {
+            setSvcId(preSvc);
+            // Optionally auto-advance to step 1 specific options
+        }
+    }, [preSvc]);
     const [form, setForm] = useState({ member: FAMILY_MEMBERS[0], date: '', time: '', address: '', notes: '', isSub: false });
 
     // Service-specific sub-options
@@ -209,5 +220,13 @@ export default function BookingWizard() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function BookingWizard() {
+    return (
+        <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
+            <BookingForm />
+        </Suspense>
     );
 }

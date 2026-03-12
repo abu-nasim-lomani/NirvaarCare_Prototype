@@ -1,5 +1,6 @@
 'use client';
-import { Download, ArrowUp, ArrowDown, Filter } from 'lucide-react';
+import { useState } from 'react';
+import { Download, ArrowUp, ArrowDown, Filter, CheckCircle2, Loader2 } from 'lucide-react';
 import { useLang } from '@/components/context/LanguageContext';
 
 const PAYMENTS = [
@@ -12,7 +13,13 @@ const PAYMENTS = [
 
 export default function PaymentsPage() {
     const { t } = useLang();
+    const [downloading, setDownloading] = useState<string | null>(null);
     const total = PAYMENTS.filter(p => p.status === 'paid').reduce((s, p) => s + parseInt(p.amount.replace(/[৳,]/g, '')), 0);
+
+    const handleDownload = (id: string) => {
+        setDownloading(id);
+        setTimeout(() => setDownloading(null), 1500); // Simulate PDF generation
+    };
 
     return (
         <div className="max-w-3xl mx-auto px-4 py-8">
@@ -56,8 +63,11 @@ export default function PaymentsPage() {
                                 <div className={`font-bold ${p.status === 'refunded' ? 'text-emergency line-through' : ''}`}>{p.amount}</div>
                                 {p.status === 'refunded' && <div className="text-xs text-emergency">{t('ফেরত দেওয়া হয়েছে', 'Refunded')}</div>}
                             </div>
-                            <button className="p-1.5 hover:bg-gray-50 rounded-lg text-gray-400 hover:text-primary transition-colors">
-                                <Download className="w-4 h-4" />
+                            <button
+                                onClick={() => handleDownload(p.id)}
+                                disabled={downloading === p.id}
+                                className="p-1.5 hover:bg-primary/10 rounded-lg text-primary transition-colors disabled:opacity-50">
+                                {downloading === p.id ? <Loader2 className="w-4 h-4 animate-spin text-primary" /> : <Download className="w-4 h-4" />}
                             </button>
                         </div>
                     ))}

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Folder, FileText, Upload, MoreVertical, Search, FolderOpen } from 'lucide-react';
+import { Folder, FileText, Upload, MoreVertical, Search, FolderOpen, Link2, Copy, Check } from 'lucide-react';
 import { useLang } from '@/components/context/LanguageContext';
 
 const FOLDERS = ['টেস্ট রিপোর্ট', 'প্রেসক্রিপশন', 'হাসপাতাল ডকুমেন্ট', 'ইমেজিং (X-Ray, CT)'];
@@ -13,7 +13,14 @@ export default function VaultPage() {
     const [activeFolder, setActiveFolder] = useState('টেস্ট রিপোর্ট');
     const [modalOpen, setModalOpen] = useState(false);
     const [shareOpen, setShareOpen] = useState(false);
+    const [copied, setCopied] = useState(false);
     const [files, setFiles] = useState(FILES);
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText('https://nirvaarcare.com.bd/vault/shared/X8Y9Z');
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     const curFiles = files.filter(f => f.folder === activeFolder);
 
@@ -39,6 +46,30 @@ export default function VaultPage() {
                             <button onClick={() => setModalOpen(false)} className="flex-1 border border-gray-200 py-2.5 rounded-xl text-sm font-medium">{t('বাতিল', 'Cancel')}</button>
                             <button onClick={() => { setFiles([...files, { id: Date.now(), name: 'New_Document.pdf', date: 'Today', type: 'pdf', folder: activeFolder, size: '2.5 MB', uploader: 'Customer' }]); setModalOpen(false) }} className="flex-1 bg-primary text-white py-2.5 rounded-xl text-sm font-bold">{t('আপলোড', 'Upload')}</button>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Share Link Modal */}
+            {shareOpen && (
+                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-3xl p-6 w-full max-w-sm">
+                        <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                            <Link2 className="w-6 h-6 text-primary" />
+                        </div>
+                        <h3 className="font-bold text-lg mb-1">{t('ভল্ট শেয়ার করুন', 'Share Vault')}</h3>
+                        <p className="text-sm text-gray-500 mb-5">{t('ডাক্তার বা পরিবারের সাথে রিপোর্ট শেয়ার করতে এই লিংকটি কপি করুন। লিংকটি ৪৮ ঘণ্টা পর মেয়াদোত্তীর্ণ হবে।', 'Copy this link to share reports with your doctor or family. The link expires in 48 hours.')}</p>
+
+                        <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl p-2 mb-5">
+                            <input type="text" readOnly value="https://nirvaarcare.com.bd/vault/shared/X8Y9Z" className="bg-transparent text-sm text-gray-600 flex-1 outline-none px-2 font-mono" />
+                            <button onClick={handleCopy} className={`p-2 rounded-lg transition-colors ${copied ? 'bg-success text-white' : 'bg-white border text-gray-600 hover:bg-gray-100'}`}>
+                                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                            </button>
+                        </div>
+
+                        <button onClick={() => setShareOpen(false)} className="w-full bg-primary text-white py-3 rounded-xl text-sm font-bold hover:bg-primary-dark transition-colors">
+                            {t('বন্ধ করুন', 'Close')}
+                        </button>
                     </div>
                 </div>
             )}
