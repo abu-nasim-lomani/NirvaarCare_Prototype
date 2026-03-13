@@ -35,7 +35,7 @@ export default function Navbar() {
                     <div className="hidden md:flex items-center gap-6">
                         <Link href="/services" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('সেবাসমূহ', 'Services')}</Link>
                         <Link href="/pricing" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('প্যাকেজ', 'Pricing')}</Link>
-                        <Link href="/foundation" className="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors flex items-center gap-1"><Heart className="w-3.5 h-3.5" />{t('ফাউন্ডেশন', 'Foundation')}</Link>
+                        {/* <Link href="/foundation" className="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors flex items-center gap-1"><Heart className="w-3.5 h-3.5" />{t('ফাউন্ডেশন', 'Foundation')}</Link> */}
                         <Link href="/about" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('আমাদের সম্পর্কে', 'About')}</Link>
                         <Link href="/team" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('আমাদের টিম', 'Team')}</Link>
                         <Link href="/contact" className="text-sm font-medium text-gray-600 hover:text-primary transition-colors">{t('যোগাযোগ', 'Contact')}</Link>
